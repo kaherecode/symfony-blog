@@ -1,20 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogController!{% endblock %}
+{% block title %}Accueil | {{ parent() }}{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">Articles récents</h1>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="row">
+        <div class="d-flex flex-row flex-wrap">
+            <div class="card m-2" style="width: 16rem;">
+                <a href="">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/270557/pexels-photo-270557.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
+                </a>
+                <div class="card-body">
+                    <a href="">
+                        <h5 class="card-title">Comment faire une app géniale</h5>
+                    </a>
+                    <small class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content...</small>
+                </div>
+            </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/orion/Documents/kaherecode/symfony-blog/src/Controller/BlogController.php'|file_link(0) }}">src/Controller/BlogController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/orion/Documents/kaherecode/symfony-blog/templates/blog/index.html.twig'|file_link(0) }}">templates/blog/index.html.twig</a></code></li>
-    </ul>
+            <div class="card m-2" style="width: 16rem;">
+                <a href="">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/270557/pexels-photo-270557.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
+                </a>
+                <div class="card-body">
+                    <a href="">
+                        <h5 class="card-title">Comment faire une app géniale</h5>
+                    </a>
+                    <small class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content...</small>
+                </div>
+            </div>
+
+            <div class="card m-2" style="width: 16rem;">
+                <a href="">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/270557/pexels-photo-270557.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
+                </a>
+                <div class="card-body">
+                    <a href="">
+                        <h5 class="card-title">Comment faire une app géniale</h5>
+                    </a>
+                    <small class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content...</small>
+                </div>
+            </div>
+
+            <div class="card m-2" style="width: 16rem;">
+                <a href="">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/270557/pexels-photo-270557.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
+                </a>
+                <div class="card-body">
+                    <a href="">
+                        <h5 class="card-title">Comment faire une app géniale</h5>
+                    </a>
+                    <small class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content...</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

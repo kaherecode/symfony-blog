@@ -13,7 +13,7 @@ class BlogController extends AbstractController
      */
     public function index(): Response
     {
-        return new Response("<h1>Hello toi dev Symfony, bienvenue sur Kaherecode!</h1>");
+        return $this->render('blog/index.html.twig');
     }
 
     /**
@@ -21,7 +21,7 @@ class BlogController extends AbstractController
      */
     public function add()
     {
-        return new Response("<h1>Contrôleur d'ajout d'un article</h1>");
+        return $this->render('blog/add.html.twig');
     }
 
     /**
@@ -29,7 +29,7 @@ class BlogController extends AbstractController
      */
     public function edit(string $url)
     {
-        return new Response("<h1>Contrôleur pour modifier l'article: $url</h1>");
+        return $this->render('blog/edit.html.twig', ['slug' => $url]);
     }
 
     /**
@@ -37,7 +37,7 @@ class BlogController extends AbstractController
      */
     public function show(string $url)
     {
-        return new Response("<h1>Contrôleur pour afficher l'article: $url</h1>");
+        return $this->render('blog/show.html.twig', ['slug' => $url]);
     }
 
     /**
