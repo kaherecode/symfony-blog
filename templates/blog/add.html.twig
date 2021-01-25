@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
-
 {% block content %}
-<h1>Ajout d'un article</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1>Ajouter un article</h1>
+
+            {% include 'includes/_article_form.html.twig' %}
+        </div>
+    </div>
+</div>
 {% endblock %}

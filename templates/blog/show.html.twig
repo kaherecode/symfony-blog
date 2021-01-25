@@ -1,5 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<h1>Affichage de l'article: {{ slug }}</h1>
+<article class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1>Comment faire une app géniale</h1>
+            <p class="text-secondary">Par <a href="">@alioukahere</a>, le 25 Janvier 2020</p>
+            <img src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?cs=srgb&dl=pexels-pixabay-270348.jpg&fm=jpg" alt="" class="img-fluid">
+            <small>
+                <a href="">php</a>, <a href="">symfony</a>
+            </small>
+
+            <div class="mt-4">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
+        </div>
+    </div>
+</article>
 {% endblock %}
