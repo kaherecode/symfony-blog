@@ -1,24 +1,21 @@
-<form>
+{{ form_start(form) }}
     <div class="form-group">
-        <label for="picture">Image à la une</label>
-        <input type="file" class="form-control-file" id="picture">
+        {{ form_label(form.picture, 'Image à la une') }}
+        {{ form_widget(form.picture, {'attr': {'class': 'form-control-file'}}) }}
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="title">Titre</label>
-            <input type="text" class="form-control" id="title" placeholder="Titre">
+            {{ form_label(form.title, 'Titre') }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Titre'}}) }}
         </div>
         <div class="form-group col-md-6">
-            <label for="categories">Catégories</label>
-            <select id="categories" class="form-control">
-                <option selected>Choisir...</option>
-                <option>...</option>
-            </select>
+            {{ form_label(form.categories, 'Catégories') }}
+            {{ form_widget(form.categories, {'attr': {'class': 'selectpicker form-control'}}) }}
         </div>
     </div>
     <div class="form-group">
-        <label for="content">Contenu</label>
-        <textarea id="content" class="form-control" rows="12"></textarea>
+        {{ form_label(form.content, 'Contenu') }}
+        {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 12}}) }}
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
-</form>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+{{ form_end(form) }}
