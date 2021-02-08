@@ -29,6 +29,25 @@ class BlogController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // on commence par récupérer le champ "picture" du formulaire
+            $picture = $form->get("picture")->getData();
+            if ($picture) { // on vérifie si l'utilisateur a renseigner une image
+                // on crée un nouveau nom que nous allons utiliser pour l'image
+                $fileName =  uniqid(). '.' .$picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('images_directory'), // Le dossier dans le quel le fichier va etre charger
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+
+                // le champ "picture" va contenir le nom du fichier sur le disque dure
+                $article->setPicture($fileName);
+            }
+
             // on récupère l'entity manager qui va nous permettre d'interagir avec la BDD
             $em = $this->getDoctrine()->getManager();
 
