@@ -7,6 +7,7 @@ use App\Form\ArticleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BlogController extends AbstractController
@@ -22,7 +23,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/add", name="add_article")
      */
-    public function add(Request $request)
+    public function add(Request $request, SluggerInterface $slugger)
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -48,6 +49,11 @@ class BlogController extends AbstractController
                 $article->setPicture($fileName);
             }
 
+            // on renseigne le slug de l'article
+            $article->setSlug(
+                strtolower($slugger->slug($article->getTitle())). "-" .uniqid()
+            );
+
             // on récupère l'entity manager qui va nous permettre d'interagir avec la BDD
             $em = $this->getDoctrine()->getManager();
 
@@ -67,26 +73,31 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{url}", name="edit_article")
+     * @Route("/edit/{slug}", name="edit_article")
      */
-    public function edit(string $url)
+    public function edit(Article $article)
     {
-        return $this->render('blog/edit.html.twig', ['slug' => $url]);
+        $form = $this->createForm(ArticleType::class, $article);
+
+        return $this->render(
+            'blog/edit.html.twig',
+            ['article' => $article, 'form' => $form->createView()]
+        );
     }
 
     /**
-     * @Route("/show/{url}", name="show_article")
+     * @Route("/show/{slug}", name="show_article")
      */
-    public function show(string $url)
+    public function show(string $slug)
     {
-        return $this->render('blog/show.html.twig', ['slug' => $url]);
+        return $this->render('blog/show.html.twig', ['slug' => $slug]);
     }
 
     /**
-     * @Route("/delete/{url}", name="delete_article")
+     * @Route("/delete/{slug}", name="delete_article")
      */
-    public function delete(string $url)
+    public function delete(string $slug)
     {
-        return new Response("<h1>Contrôleur pour supprimer l'article: $url</h1>");
+        return new Response("<h1>Contrôleur pour supprimer l'article: $slug</h1>");
     }
 }
