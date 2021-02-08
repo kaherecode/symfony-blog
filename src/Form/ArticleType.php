@@ -22,7 +22,7 @@ class ArticleType extends AbstractType
                 FileType::class,
                 ['required' => false, 'mapped' => false]
             )
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, ['required' => false])
             ->add('content', TextareaType::class, ['required' => false])
             ->add(
                 'categories',
@@ -31,7 +31,8 @@ class ArticleType extends AbstractType
                     'class' => Category::class,
                     'choice_label' => 'label',
                     'multiple' => true,
-                    'expanded' => false
+                    'expanded' => false,
+                    'required' => false
                 ]
             );
     }

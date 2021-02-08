@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -25,6 +26,7 @@ class Article
     private $picture;
 
     /**
+     * @Assert\NotBlank(message="Le titre ne peut pas être vide.")
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -50,7 +52,7 @@ class Article
     private $publishedAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $isPublished;
 
@@ -62,6 +64,8 @@ class Article
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->createdAt = new \DateTime;
+        $this->isPublished = false;
     }
 
     public function getId(): ?int
