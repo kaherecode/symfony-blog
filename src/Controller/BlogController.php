@@ -75,9 +75,63 @@ class BlogController extends AbstractController
     /**
      * @Route("/edit/{slug}", name="edit_article")
      */
-    public function edit(Article $article)
-    {
+    public function edit(
+        Article $article,
+        Request $request,
+        SluggerInterface $slugger
+    ) {
         $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // on commence par récupérer le champ "picture" du formulaire
+            $picture = $form->get("picture")->getData();
+            if ($picture) { // on vérifie si l'utilisateur a renseigner une image
+                // on vérifie si l'article avait déjà une image
+                if ($article->getPicture() !== null) {
+                    // on supprime l'image sur le serveur
+                    unlink($this->getParameter('images_directory'). '/' .$article->getPicture());
+                }
+
+                // on crée un nouveau nom que nous allons utiliser pour l'image
+                $fileName =  uniqid(). '.' .$picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('images_directory'), // Le dossier dans le quel le fichier va etre charger
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+
+                // le champ "picture" va contenir le nom du fichier sur le disque dure
+                $article->setPicture($fileName);
+            }
+
+            if ($article->getPublishedAt() === null) {
+                // on renseigne le slug de l'article
+                $article->setSlug(
+                    strtolower($slugger->slug($article->getTitle())). "-" .uniqid()
+                );
+            }
+
+            $article->setUpdatedAt(new \DateTime);
+
+            // on récupère l'entity manager qui va nous permettre d'interagir avec la BDD
+            $em = $this->getDoctrine()->getManager();
+
+            // cette fois ci on ne persiste plus l'article,
+            // l'entity manager le connait déjà parce qu'il est aller le chercher en BDD
+
+            // on exécute la requête en base de données
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'edit_article',
+                ['slug' => $article->getSlug()]
+            );
+        }
 
         return $this->render(
             'blog/edit.html.twig',
@@ -86,11 +140,40 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/publish/{slug}", name="publish_article")
+     */
+    public function publish(Article $article)
+    {
+        if ($article->getPicture() !== null && $article->getPicture() !== ''
+            && $article->getContent() !== null && $article->getContent() !== ''
+            && $article->getCategories() !== null
+            && $article->getTitle() !== null && $article->getTitle() !== ''
+        ) {
+            $article->setPublishedAt(new \DateTime);
+            $article->setIsPublished(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            // on redirige vers la page d'affichage d'un article si tout est OK
+            return $this->redirectToRoute(
+                'show_article',
+                ['slug' => $article->getSlug()]
+            );
+        }
+
+        return $this->redirectToRoute(
+            'edit_article',
+            ['slug' => $article->getSlug()]
+        );
+    }
+
+    /**
      * @Route("/show/{slug}", name="show_article")
      */
-    public function show(string $slug)
+    public function show(Article $article)
     {
-        return $this->render('blog/show.html.twig', ['slug' => $slug]);
+        return $this->render('blog/show.html.twig', ['article' => $article]);
     }
 
     /**

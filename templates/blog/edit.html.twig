@@ -11,6 +11,10 @@
         <div class="col">
             <h1>Modifier l'article {{ article.title }}</h1>
 
+            <div class="mb-4">
+                <a href="{{ path('publish_article', {'slug': article.slug}) }}" class="btn btn-success">Publier l'article</a>
+            </div>
+
             {% if article.picture is not null %}
                 <img src="{{ asset('uploads/' ~ article.picture) }}" alt="{{ article.title }}" style="width: 350px;">
             {% endif %}
