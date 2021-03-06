@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +16,14 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function index(): Response
+    public function index(ArticleRepository $articleRepository): Response
     {
-        return $this->render('blog/index.html.twig');
+        $articles = $articleRepository->findBy(
+            ['isPublished' => true],
+            ['publishedAt' => 'DESC']
+        );
+
+        return $this->render('blog/index.html.twig', ['articles' => $articles]);
     }
 
     /**
@@ -57,13 +63,16 @@ class BlogController extends AbstractController
             // on récupère l'entity manager qui va nous permettre d'interagir avec la BDD
             $em = $this->getDoctrine()->getManager();
 
-            // on confie l'objet $article à l''entity manager (on le persiste)
+            // on confie l'objet $article à l'entity manager (on le persiste)
             $em->persist($article);
 
             // on exécute la requête en base de données
             $em->flush();
 
-            return new Response("L'article a bien été enregitrer.");
+            return $this->redirectToRoute(
+                'edit_article',
+                ['slug' => $article->getSlug()]
+            );
         }
 
         return $this->render(
