@@ -4,12 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     {% block stylesheets %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     {% endblock %}
-
     <title>{% block title %}Symfony Blog{% endblock %}</title>
 </head>
 
@@ -21,18 +19,27 @@
         </button>
         <div class="collapse navbar-collapse" id="mobileMenu">
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('homepage') }}">Home</a>
-                </li>
+                {% if app.user %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <span class="nav-link">Bienvenue {{ app.user.username }}!</span>
                 </li>
+                {% endif %}
+                <li class="nav-item {{ app.request.get('_route') == 'homepage' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
+                </li>
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                </li>
+                {% else %}
+                <li class="nav-item {{ app.request.get('_route') == 'app_login' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
-
     {% block content %}{% endblock %}
-
     {% block scripts %}
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
