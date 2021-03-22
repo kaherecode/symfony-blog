@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="container p-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+            {% for flashError in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+            {% endfor %}
+            <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+            {{ form_start(registrationForm) }}
+            <div class="form-group">
+                {{ form_label(registrationForm.email, 'Adresse Email') }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                <small class="text-danger">{{ form_errors(registrationForm.email) }}</small>
+            </div>
+            <div class="form-group">
+                {{ form_label(registrationForm.username, 'Nom d\'utilisateur') }}
+                {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
+                <small class="text-danger">{{ form_errors(registrationForm.username) }}</small>
+            </div>
+            <div class="form-group">
+                {{ form_label(registrationForm.plainPassword, 'Mot de Passe') }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                <small class="text-danger">{{ form_errors(registrationForm.plainPassword) }}</small>
+            </div>
+            <div class="checkbox mb-3">
+                <label>
+                    {{ form_widget(registrationForm.agreeTerms) }} <a href="#">Termes d'utilisations</a>
+                </label>
+            </div>
+            <button type="submit" class="btn">M'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
