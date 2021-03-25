@@ -25,7 +25,7 @@ class AdminController extends AbstractController
 
         return $this->render(
             'admin/index.html.twig',
-            compact($articles, $users)
+            compact('articles', 'users')
         );
     }
 }

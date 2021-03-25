@@ -1,7 +1,103 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Admin. | {{ parent() }}{% endblock %}
 
 {% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <h2 class="col">Articles</h2>
+            <div class="col text-right">
+                <a href="{{ path('add_article') }}" class="btn btn-primary">Ajouter un article</a>
+            </div>
+            <div class="col-12">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Titre</th>
+                      <th scope="col">Statut</th>
+                      <th scope="col">Publier le</th>
+                      <th scope="col">Modifier le</th>
+                      <th scope="col" style="max-width: 50px; text-align: center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set i = 1 %}
+                    {% for article in articles %}
+                        <tr>
+                          <th scope="row">{{ i }}</th>
+                          <td><a href="{{ path('show_article', {'slug': article.slug}) }}">{{ article.title }}</a></td>
+                          <td>
+                            {% if article.isPublished %}
+                                <small class="badge badge-success">publier</small>
+                            {% else %}
+                                <small class="badge badge-warning">brouillon</small>
+                            {% endif %}
+                          </td>
+                          <td>{{ article.isPublished ? article.publishedAt|format_date : '-' }}</td>
+                          <td>{{ article.updatedAt|format_date }}</td>
+                          <td class="text-center">
+                            <a href="{{ path('edit_article', {'slug': article.slug}) }}" class="text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </a>
+                            <a href="{{ path('delete_article', {'slug': article.slug}) }}" class="text-danger" onclick="confirm('Es-tu certain de vouloir supprimer cet article?')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </a>
+                          </td>
+                        </tr>
+                        {% set i = i+1 %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
 
+        <div class="row mt-4">
+            <h2 class="col">Utilisateurs</h2>
+            <div class="col-12">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Adresse Email</th>
+                      <th scope="col">Username</th>
+                      <th scope="col">Roles</th>
+                      <th scope="col" style="max-width: 50px; text-align: center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set i = 1 %}
+                    {% for user in users %}
+                        <tr>
+                          <th scope="row">{{ i }}</th>
+                          <td><a href="mailto:{{ user.email }}">{{ user.email }}</td>
+                          <td>{{ user.username }}</td>
+                          <td>
+                            {% if user.hasRoles('ROLE_ADMIN') %}
+                                <small class="badge badge-success">admin.</small>
+                            {% elseif user.hasRoles('ROLE_MODERATOR') %}
+                                <small class="badge badge-primary">moderateur</small>
+                            {% else %}
+                                <small class="badge badge-warning">user</small>
+                            {% endif %}
+                          </td>
+                          <td class="text-center">
+                            <a href="" class="text-danger" onclick="confirm('Es-tu certain de vouloir supprimer cet utilisateur?')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </a>
+                          </td>
+                        </tr>
+                        {% set i = i+1 %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

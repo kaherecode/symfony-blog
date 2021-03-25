@@ -99,7 +99,11 @@ class BlogController extends AbstractController
                 // on vérifie si l'article avait déjà une image
                 if ($article->getPicture() !== null) {
                     // on supprime l'image sur le serveur
-                    unlink($this->getParameter('images_directory'). '/' .$article->getPicture());
+                    if (file_exists(
+                        $this->getParameter('images_directory'). '/' .$article->getPicture()
+                    )) {
+                        unlink($this->getParameter('images_directory'). '/' .$article->getPicture());
+                    }
                 }
 
                 // on crée un nouveau nom que nous allons utiliser pour l'image
